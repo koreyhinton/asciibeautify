@@ -3,6 +3,7 @@ import "@material/mwc-select";
 import "@material/mwc-textarea";
 import "@material/mwc-list/mwc-list-item";
 import "./ascii-beautify.js";
+import ascii_beautify_bg_fg_swap from "./ascii-beautify-bg-fg-swap.js";
 
 class AsciiBeautifyDemo extends LitElement {
   static get properties() {
@@ -144,7 +145,7 @@ class AsciiBeautifyDemo extends LitElement {
     console.log(scifi_obj);
     this.themes = [...this.themes.filter(theme => theme.name!="SciFi"),
 		  scifi_obj];
-    
+    this.themes[0] = ascii_beautify_bg_fg_swap(this.themes[0]);
     this.selectedTheme = this.themes[0];
     this.designs = [
       {
@@ -219,6 +220,12 @@ MMMMM88&&&&&&
     textarea.shadowRoot.querySelector("textarea").style.overflowX = "auto";
   }
 
+  updated(changedProps) {
+    if (changedProps.has("selectedTheme")) {
+      ascii_beautify_bg_fg_swap(this.selectedTheme);
+    }
+  }
+  
   static get styles() {
     return css`
       :host {

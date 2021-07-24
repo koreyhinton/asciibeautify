@@ -1,4 +1,4 @@
-export default ascii_beautify_reduce = (theme, ascii) => {
+const ascii_beautify_reduce = (theme, ascii) => {
   var subtheme = {};
   subtheme.name=theme.name;
   subtheme.colors={};
@@ -10,3 +10,5 @@ export default ascii_beautify_reduce = (theme, ascii) => {
   }
   return subtheme;
 }
+
+export default ascii_beautify_reduce;
