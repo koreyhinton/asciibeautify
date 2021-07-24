@@ -5,6 +5,7 @@ import "@material/mwc-icon-button";
 import "@material/mwc-list/mwc-list-item";
 import "./ascii-beautify.js";
 import ascii_beautify_bg_fg_swap from "./ascii-beautify-bg-fg-swap.js";
+import ascii_beautify_reduce from "./ascii-beautify-reduce.js";
 
 class AsciiBeautifyDemo extends LitElement {
   static get properties() {
@@ -13,7 +14,10 @@ class AsciiBeautifyDemo extends LitElement {
         type: Array,
       },
       selectedTheme: {
-        type: String,
+        type: Object,
+      },
+      subTheme: {
+        type: Object,
       },
       ascii: {
         type: String,
@@ -163,14 +167,18 @@ class AsciiBeautifyDemo extends LitElement {
     for (var i = 0; i < templ_keys.length; i++) {
       scifi_obj.colors[templ_keys[i]] = scifi[i % scifi.length];
     }
-    
+
     this.themes = [
-      ...this.themes.filter((theme) => theme.name != "SciFi" && theme.name != "Dark" && theme.name != "Light"),
+      ...this.themes.filter(
+        (theme) =>
+          theme.name != "SciFi" && theme.name != "Dark" && theme.name != "Light"
+      ),
       scifi_obj,
       darkTheme,
       lightTheme,
     ];
 
+    this.subTheme = {};
     console.log(this.themes);
     this.selectedTheme = this.themes[1];
     this.swapSelectedThemeBackground();
@@ -252,13 +260,24 @@ MMMMM88&&&&&&
       this.swapSelectedThemeBackground();
     }
 
-    if(changedProps.has('ascii') || changedProps.has('selectedDesign')) {
+    if (changedProps.has("ascii") || changedProps.has("selectedDesign")) {
       this.fillBackgroundSpaces();
+    }
+
+    if (changedProps.has("ascii") || changedProps.has("selectedTheme")) {
+      this.drawColorChoices(this.ascii, this.selectedTheme);
     }
   }
 
   fillBackgroundSpaces() {
     console.log("FILL SPACES");
+  }
+
+  drawColorChoices(ascii, selectedTheme) {
+    if (Boolean(selectedTheme) && Boolean(ascii)) {
+      this.subTheme = ascii_beautify_reduce(selectedTheme, ascii);
+      console.log(this.subTheme);
+    }
   }
 
   async swapSelectedThemeBackground() {
@@ -281,7 +300,6 @@ MMMMM88&&&&&&
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 24px;
       }
 
       h1 {
@@ -289,6 +307,10 @@ MMMMM88&&&&&&
         font-size: 64px;
         color: var(--primary-color);
         margin: 0;
+      }
+
+      p {
+        max-width: 600px;
       }
 
       mwc-textarea,
@@ -299,6 +321,44 @@ MMMMM88&&&&&&
 
       mwc-textarea {
         height: 300px;
+      }
+
+      color-picker-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 24px;
+      }
+
+      color-picker {
+        display: flex;
+        width: 50;
+        height: 50;
+        border-radius: 50%;
+        border: 3px solid #eee;
+        justify-content: center;
+        align-items: center;
+        opacity: 0.7;
+        overflow: hidden;
+      }
+
+      color-picker:hover {
+        opacity: 1;
+        transition: 0.5s ease;
+        cursor: pointer;
+      }
+
+      color-picker span {
+        font-size: 24px;
+        font-weight: 500;
+        position: absolute;
+      }
+
+      input[type="color"] {
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        opacity: 0;
       }
     `;
   }
@@ -319,6 +379,11 @@ MMMMM88&&&&&&
           </svg>
         </mwc-icon-button>
       </header>
+      <p>
+          Draw some beautiful ascii art! Or select from a few pre-made designs.
+          Select a theme and customize your colors and watch your masterpiece unfold
+          in real time!
+        </p>
       <mwc-select
         label="Design"
         outlined
@@ -365,6 +430,25 @@ MMMMM88&&&&&&
             `
         )}
       </mwc-select>
+
+      <color-picker-container>
+        ${Object.entries(this.subTheme?.colors ?? {}).map((a) => {
+          return html`
+            <color-picker style="background-color: ${a[1]}">
+              <span>${a[0]}</span>
+              <input
+                .value=${a[1]}
+                @change=${(e) => {
+                  this.subTheme.colors[a[0]] = e.target.value;
+                  this.selectedTheme = this.subTheme;
+                }}
+                type="color"
+              />
+            </color-picker>
+          `;
+        })}
+      </color-picker-container>
+
       <ascii-beautify
         .ascii=${this.ascii ?? ""}
         .colors=${this.selectedTheme.colors ?? {}}
