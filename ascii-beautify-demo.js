@@ -4,6 +4,7 @@ import "@material/mwc-textarea";
 import "@material/mwc-icon-button";
 import "@material/mwc-list/mwc-list-item";
 import "./ascii-beautify.js";
+import ascii_beautify_bg_fg_swap from "./ascii-beautify-bg-fg-swap.js";
 
 class AsciiBeautifyDemo extends LitElement {
   static get properties() {
@@ -126,14 +127,7 @@ class AsciiBeautifyDemo extends LitElement {
       "~": "#FFFFFF",
     };
     var scifi = [
-      "#000",
-      "#FFF",
-      "#623ea2",
-      "#2e1f49",
-      "#2eff6c",
-      "#1d775d",
-      "#e53aff",
-      "#9b20b7",
+      "#000" ,"#FFF", "#623ea2","#2e1f49","#2eff6c","#1d775d", "#e53aff", "#9b20b7", "#6c6c6c", "#6920b7", "#88b720"
     ];
     this.themes = [
       { name: "Default", colors: "default" },
@@ -150,11 +144,9 @@ class AsciiBeautifyDemo extends LitElement {
       scifi_obj.colors[templ_keys[i]] = scifi[i % scifi.length];
     }
     console.log(scifi_obj);
-    this.themes = [
-      ...this.themes.filter((theme) => theme.name != "SciFi"),
-      scifi_obj,
-    ];
-
+    this.themes = [...this.themes.filter(theme => theme.name!="SciFi"),
+		  scifi_obj];
+    this.themes[0] = ascii_beautify_bg_fg_swap(this.themes[0]);
     this.selectedTheme = this.themes[0];
     this.designs = [
       {
@@ -229,6 +221,12 @@ MMMMM88&&&&&&
     textarea.shadowRoot.querySelector("textarea").style.overflowX = "auto";
   }
 
+  updated(changedProps) {
+    if (changedProps.has("selectedTheme")) {
+      ascii_beautify_bg_fg_swap(this.selectedTheme);
+    }
+  }
+  
   static get styles() {
     return css`
       :host {
