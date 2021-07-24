@@ -27,11 +27,124 @@ class AsciiBeautifyDemo extends LitElement {
 
   constructor() {
     super();
+    var template = {
+      "0": "#FFFFFF",
+      "1": "#FFFFFF",
+      "2": "#FFFFFF",
+      "3": "#FFFFFF",
+      "4": "#FFFFFF",
+      "5": "#FFFFFF",
+      "6": "#FFFFFF",
+      "7": "#FFFFFF",
+      "8": "#FFFFFF",
+      "9": "#FFFFFF",
+      " ": "#FFFFFF",
+      "!": "#FFFFFF",
+      '"': "#FFFFFF",
+      "#": "#FFFFFF",
+      "$": "#FFFFFF",
+      "%": "#FFFFFF",
+      "&": "#FFFFFF",
+      "'": "#FFFFFF",
+      "(": "#FFFFFF",
+      ")": "#FFFFFF",
+      "*": "#FFFFFF",
+      "+": "#FFFFFF",
+      ",": "#FFFFFF",
+      "-": "#FFFFFF",
+      ".": "#FFFFFF",
+      "/": "#FFFFFF",
+      ":": "#FFFFFF",
+      ";": "#FFFFFF",
+      "<": "#FFFFFF",
+      "=": "#FFFFFF",
+      ">": "#FFFFFF",
+      "?": "#FFFFFF",
+      "@": "#FFFFFF",
+      "A": "#FFFFFF",
+      "B": "#FFFFFF",
+      "C": "#FFFFFF",
+      "D": "#FFFFFF",
+      "E": "#FFFFFF",
+      "F": "#FFFFFF",
+      "G": "#FFFFFF",
+      "H": "#FFFFFF",
+      "I": "#FFFFFF",
+      "J": "#FFFFFF",
+      "K": "#FFFFFF",
+      "L": "#FFFFFF",
+      "M": "#FFFFFF",
+      "N": "#FFFFFF",
+      "O": "#FFFFFF",
+      "P": "#FFFFFF",
+      "Q": "#FFFFFF",
+      "R": "#FFFFFF",
+      "S": "#FFFFFF",
+      "T": "#FFFFFF",
+      "U": "#FFFFFF",
+      "V": "#FFFFFF",
+      "W": "#FFFFFF",
+      "X": "#FFFFFF",
+      "Y": "#FFFFFF",
+      "Z": "#FFFFFF",
+      "[": "#FFFFFF",
+      "\\": "#FFFFFF",
+      "]": "#FFFFFF",
+      "^": "#FFFFFF",
+      "_": "#FFFFFF",
+      "`": "#FFFFFF",
+      "a": "#FFFFFF",
+      "b": "#FFFFFF",
+      "c": "#FFFFFF",
+      "d": "#FFFFFF",
+      "e": "#FFFFFF",
+      "f": "#FFFFFF",
+      "g": "#FFFFFF",
+      "h": "#FFFFFF",
+      "i": "#FFFFFF",
+      "j": "#FFFFFF",
+      "k": "#FFFFFF",
+      "l": "#FFFFFF",
+      "m": "#FFFFFF",
+      "n": "#FFFFFF",
+      "o": "#FFFFFF",
+      "p": "#FFFFFF",
+      "q": "#FFFFFF",
+      "r": "#FFFFFF",
+      "s": "#FFFFFF",
+      "t": "#FFFFFF",
+      "u": "#FFFFFF",
+      "v": "#FFFFFF",
+      "w": "#FFFFFF",
+      "x": "#FFFFFF",
+      "y": "#FFFFFF",
+      "z": "#FFFFFF",
+      "{": "#FFFFFF",
+      "|": "#FFFFFF",
+      "}": "#FFFFFF",
+      "~": "#FFFFFF"
+    };
+    var scifi = [
+      "#000" ,"#FFF", "#623ea2","#2e1f49","#2eff6c","#1d775d", "#e53aff", "#9b20b7"
+    ];
     this.themes = [
       { name: "Default", colors: "default" },
       { name: "Light", colors: "light" },
       { name: "Dark", colors: "dark" },
+      { name: "SciFi", colors: {} },
+
+//	  {
+//	  " ": "#FFF", "!":"#e53aff", ".": "#000", "/":"#623ea2", ":": "#2e1f49" //}
     ];
+    var scifi_obj={name: "SciFi", colors: {}};
+    var templ_keys=Object.keys(template);
+    for (var i=0;i<templ_keys.length;i++) {
+      scifi_obj.colors[templ_keys[i]] = scifi[i%scifi.length];
+    }
+    console.log(scifi_obj);
+    this.themes = [...this.themes.filter(theme => theme.name!="SciFi"),
+		  scifi_obj];
+    
     this.selectedTheme = this.themes[0];
     this.designs = [
       {
@@ -162,7 +275,7 @@ MMMMM88&&&&&&
         label="Theme"
         outlined
         @selected=${(e) => {
-          this.selectedTheme = e.target.value;
+          this.selectedTheme = this.themes.find(theme => theme.name===e.target.value);//e.target.value;
           console.log(e.target.value);
         }}
       >
