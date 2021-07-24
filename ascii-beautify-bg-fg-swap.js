@@ -12,7 +12,7 @@ const ascii_beautify_bg_fg_swap = (theme) => {
       has_space = true;
       sp_idx=i;
     }
-    if (theme.colors[k] == "#000" ||theme.colors[k] == "#000000" || theme.colors[k]=="white") {
+    if (theme.colors[k] == "#fff" ||theme.colors[k] == "#ffffff" || theme.colors[k]=="white"||theme.colors[k] == "#FFF"|theme.colors[k] == "#FFFFFF") {
       has_white=true;
       wht_idx=i;
     }
