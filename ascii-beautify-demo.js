@@ -125,7 +125,7 @@ class AsciiBeautifyDemo extends LitElement {
       "~": "#FFFFFF"
     };
     var scifi = [
-      "#000" ,"#FFF", "#623ea2","#2e1f49","#2eff6c","#1d775d", "#e53aff", "#9b20b7"
+      "#000" ,"#FFF", "#623ea2","#2e1f49","#2eff6c","#1d775d", "#e53aff", "#9b20b7", "#6c6c6c", "#6920b7", "#88b720"
     ];
     this.themes = [
       { name: "Default", colors: "default" },
