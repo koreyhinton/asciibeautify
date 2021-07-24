@@ -21,6 +21,7 @@
     "lit-element": "^2.5.1"
   },
   "scripts": {
+    "start": "npm run serve",
     "serve": "es-dev-server --app-index index.html --node-resolve --watch --open",
     "build": "rimraf dist && rollup -c rollup.config.js",
     "start:build": "npm run build && es-dev-server --root-dir dist --app-index index.html --compatibility none --open"
