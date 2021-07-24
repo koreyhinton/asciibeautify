@@ -341,7 +341,7 @@ MMMMM88&&&&&&
         outlined
         label="Ascii"
         .value=${this.ascii ?? ""}
-        @input=${(e) => {
+        @change=${(e) => {
           this.ascii = e.target.value;
           console.log(e.target.value);
         }}
