@@ -127,7 +127,17 @@ class AsciiBeautifyDemo extends LitElement {
       "~": "#FFFFFF",
     };
     var scifi = [
-      "#000" ,"#FFF", "#623ea2","#2e1f49","#2eff6c","#1d775d", "#e53aff", "#9b20b7", "#6c6c6c", "#6920b7", "#88b720"
+      "#000",
+      "#FFF",
+      "#623ea2",
+      "#2e1f49",
+      "#2eff6c",
+      "#1d775d",
+      "#e53aff",
+      "#9b20b7",
+      "#6c6c6c",
+      "#6920b7",
+      "#88b720",
     ];
     this.themes = [
       { name: "Default", colors: "default" },
@@ -144,8 +154,10 @@ class AsciiBeautifyDemo extends LitElement {
       scifi_obj.colors[templ_keys[i]] = scifi[i % scifi.length];
     }
     console.log(scifi_obj);
-    this.themes = [...this.themes.filter(theme => theme.name!="SciFi"),
-		  scifi_obj];
+    this.themes = [
+      ...this.themes.filter((theme) => theme.name != "SciFi"),
+      scifi_obj,
+    ];
     this.themes[0] = ascii_beautify_bg_fg_swap(this.themes[0]);
     this.selectedTheme = this.themes[0];
     this.designs = [
@@ -226,7 +238,7 @@ MMMMM88&&&&&&
       ascii_beautify_bg_fg_swap(this.selectedTheme);
     }
   }
-  
+
   static get styles() {
     return css`
       :host {
@@ -264,7 +276,7 @@ MMMMM88&&&&&&
   render() {
     return html`
       <header>
-        <h1>Ascii Beautify Demo</h1>
+        <h1>Ascii Beautify</h1>
         <mwc-icon-button
           @click=${() =>
             window.open("https://github.com/koreyhinton/asciibeautify")}
@@ -324,8 +336,8 @@ MMMMM88&&&&&&
         )}
       </mwc-select>
       <ascii-beautify
-        .ascii=${this.ascii}
-        .colors=${this.selectedTheme.colors}
+        .ascii=${this.ascii ?? ""}
+        .colors=${this.selectedTheme.colors ?? {}}
       ></ascii-beautify>
     `;
   }
