@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit-element";
+import { LitElement, html, css } from "lit-element";
 import ascii_beautify_color_grid from "./ascii-beautify-color-grid.js";
 
 class AsciiBeautify extends LitElement {
@@ -11,6 +11,24 @@ class AsciiBeautify extends LitElement {
         type: Object,
       },
     };
+  }
+
+  static get styles() {
+    return css`
+      table {
+        border-spacing: inherit;
+      }
+
+      tr,
+      td {
+        margin: 0;
+        padding: 0;
+        border: none;
+        width: 20px;
+        height: 20px;
+        border-spacing: 0;
+      }
+    `;
   }
 
   render() {
