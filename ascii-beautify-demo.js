@@ -18,6 +18,9 @@ class AsciiBeautifyDemo extends LitElement {
       ascii: {
         type: String,
       },
+      last_ascii: {
+	type: String
+      },
       designs: {
         type: Array,
       },
@@ -29,6 +32,8 @@ class AsciiBeautifyDemo extends LitElement {
 
   constructor() {
     super();
+    this.ascii = '';
+    this.last_ascii = '';
     var template = {
       0: "#FFFFFF",
       1: "#FFFFFF",
@@ -172,8 +177,8 @@ class AsciiBeautifyDemo extends LitElement {
     ];
 
     console.log(this.themes);
-    this.selectedTheme = this.themes[1];
-    this.swapSelectedThemeBackground();
+    //this.selectedTheme = this.themes[1];
+    //this.swapSelectedThemeBackground();
     this.designs = [
       {
         name: "Computer",
@@ -236,7 +241,7 @@ MMMMM88&&&&&&
         `,
       },
     ];
-    this.selectedDesign = this.designs[0];
+    //this.selectedDesign = this.designs[0];
   }
 
   async firstUpdated() {
@@ -245,6 +250,7 @@ MMMMM88&&&&&&
     textarea.shadowRoot.querySelector("textarea").style.fontFamily = "Courier";
     textarea.shadowRoot.querySelector("textarea").style.whiteSpace = "nowrap";
     textarea.shadowRoot.querySelector("textarea").style.overflowX = "auto";
+    this.fillBackgroundSpaces();
   }
 
   updated(changedProps) {
@@ -252,13 +258,47 @@ MMMMM88&&&&&&
       this.swapSelectedThemeBackground();
     }
 
-    if(changedProps.has('ascii') || changedProps.has('selectedDesign')) {
+    if((changedProps.has('ascii') && this.ascii !== this.last_ascii) || changedProps.has('selectedDesign')) {
       this.fillBackgroundSpaces();
     }
   }
 
-  fillBackgroundSpaces() {
+  async fillBackgroundSpaces() {
+    await this.updateComplete;
     console.log("FILL SPACES");
+
+    if (this.ascii == null || this.ascii.length==0) {
+      return;
+    }
+    var min_w=999;
+    var max_w=0;
+    var lines=this.ascii.split('\n');
+    for (var i=0; i<lines.length; i++) {
+      var ll = lines[i].length;
+      if (ll<min_w)min_w=ll;
+      if (ll>max_w)max_w=ll;
+    }
+    if (min_w == max_w) {
+      return;
+    }
+    var padded_str='';
+    for (var i=0; i<lines.length; i++) {
+      var line = lines[i];
+      var trailer='';
+      if (line[line.length-1]=='\r'){
+	trailer='\r';
+      }
+      var oops=0;
+      while (line.length<max_w) {
+	line += ' ';
+	if (oops > 300) break;
+      }
+      line += trailer;
+      line += '\n';
+      padded_str += line;
+    }
+    this.ascii = padded_str;
+    this.last_ascii = this.ascii;
   }
 
   async swapSelectedThemeBackground() {
@@ -367,7 +407,7 @@ MMMMM88&&&&&&
       </mwc-select>
       <ascii-beautify
         .ascii=${this.ascii ?? ""}
-        .colors=${this.selectedTheme.colors ?? {}}
+        .colors=${this.selectedTheme?.colors ?? {}}
       ></ascii-beautify>
     `;
   }
