@@ -155,7 +155,7 @@ class AsciiBeautifyDemo extends LitElement {
     var lightTheme = { name: "Light", colors: {} };
     var lightTemplate = { ...template };
     for (let [key, value] of Object.entries(lightTemplate)) {
-      lightTheme.colors[key] = key === " " ? "#000000" : "#ffffff";
+      lightTheme.colors[key] = key === " " ? "#ffffff" : "#000000";
     }
 
     var scifi_obj = { name: "SciFi", colors: {} };
