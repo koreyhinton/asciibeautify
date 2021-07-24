@@ -393,7 +393,7 @@ MMMMM88&&&&&&
         font-size: 24px;
         font-weight: 500;
         position: absolute;
-      }
+        text-shadow: 1px 0 0 #eee, 0 -1px 0 #eee, 0 1px 0 #eee, -1px 0 0 #eee;      }
 
       input[type="color"] {
         cursor: pointer;

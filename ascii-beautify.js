@@ -31,6 +31,13 @@ class AsciiBeautify extends LitElement {
         height: 20px;
         border-spacing: 0;
       }
+
+      @media (max-width: 768px) {
+        table {
+          width: 100%;
+          max-width: 400px;
+        }
+      }
     `;
   }
 
