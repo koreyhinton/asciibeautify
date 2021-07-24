@@ -1,8 +1,16 @@
 import { LitElement, html } from "lit-element";
 
 class AsciiBeautify extends LitElement {
-  ascii;
-  colors;
+  static get properties() {
+    return {
+      ascii: {
+        type: String,
+      },
+      colors: {
+        type: Object,
+      },
+    };
+  }
 
   renderTable() {
     ascii_beautify_color_grid(this.ascii, this.colors).map((node) => {
@@ -17,7 +25,7 @@ class AsciiBeautify extends LitElement {
   }
 
   render() {
-    return html` <h1>fa</h1> `;
+    return html` <table></table> `;
   }
 }
 customElements.define("ascii-beautify", AsciiBeautify);
