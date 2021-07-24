@@ -21,9 +21,15 @@
     "lit-element": "^2.5.1"
   },
   "scripts": {
-    "serve": "es-dev-server --app-index index.html --node-resolve --watch --open"
+    "serve": "es-dev-server --app-index index.html --node-resolve --watch --open",
+    "build": "rimraf dist && rollup -c rollup.config.js",
+    "start:build": "npm run build && es-dev-server --root-dir dist --app-index index.html --compatibility none --open"
   },
   "devDependencies": {
-    "es-dev-server": "^2.1.0"
+    "@open-wc/building-rollup": "^1.10.0",
+    "deepmerge": "^4.2.2",
+    "es-dev-server": "^2.1.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.53.3"
   }
 }
