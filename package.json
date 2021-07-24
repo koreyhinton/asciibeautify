@@ -1,0 +1,29 @@
+{
+  "name": "ascii-beautify",
+  "version": "1.0.0",
+  "description": "MLH Hacky Birthday Event Contribution",
+  "main": "ascii-beautify.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koreyhinton/asciibeautify.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/koreyhinton/asciibeautify/issues"
+  },
+  "homepage": "https://github.com/koreyhinton/asciibeautify#readme",
+  "dependencies": {
+    "@material/mwc-icon-button": "^0.22.1",
+    "@material/mwc-list": "^0.22.1",
+    "@material/mwc-select": "^0.22.1",
+    "@material/mwc-textarea": "^0.22.1",
+    "lit-element": "^2.5.1"
+  },
+  "scripts": {
+    "serve": "es-dev-server --app-index index.html --node-resolve --watch --open"
+  },
+  "devDependencies": {
+    "es-dev-server": "^2.1.0"
+  }
+}
