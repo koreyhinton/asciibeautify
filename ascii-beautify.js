@@ -17,7 +17,6 @@ class AsciiBeautify extends LitElement {
     return css`
       table {
         border-spacing: inherit;
-        background: #fff;
         border: 1px solid #00000061;
         margin-top: 24px;
         border-radius: 4px;

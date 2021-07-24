@@ -127,8 +127,8 @@ class AsciiBeautifyDemo extends LitElement {
       "~": "#FFFFFF",
     };
     var scifi = [
-      "#000",
-      "#FFF",
+      "#000000",
+      "#FFFFFF",
       "#623ea2",
       "#2e1f49",
       "#2eff6c",
@@ -141,25 +141,39 @@ class AsciiBeautifyDemo extends LitElement {
     ];
     this.themes = [
       { name: "Default", colors: "default" },
-      { name: "Light", colors: "light" },
-      { name: "Dark", colors: "dark" },
+      { name: "Light", colors: {} },
+      { name: "Dark", colors: {} },
       { name: "SciFi", colors: {} },
-
-      //	  {
-      //	  " ": "#FFF", "!":"#e53aff", ".": "#000", "/":"#623ea2", ":": "#2e1f49" //}
     ];
+
+    var darkTheme = { name: "Dark", colors: {} };
+    var darkTemplate = { ...template };
+    for (let [key, value] of Object.entries(darkTemplate)) {
+      darkTheme.colors[key] = key === " " ? "#000000" : "#ffffff";
+    }
+
+    var lightTheme = { name: "Light", colors: {} };
+    var lightTemplate = { ...template };
+    for (let [key, value] of Object.entries(lightTemplate)) {
+      lightTheme.colors[key] = key === " " ? "#000000" : "#ffffff";
+    }
+
     var scifi_obj = { name: "SciFi", colors: {} };
     var templ_keys = Object.keys(template);
     for (var i = 0; i < templ_keys.length; i++) {
       scifi_obj.colors[templ_keys[i]] = scifi[i % scifi.length];
     }
-    console.log(scifi_obj);
+    
     this.themes = [
-      ...this.themes.filter((theme) => theme.name != "SciFi"),
+      ...this.themes.filter((theme) => theme.name != "SciFi" && theme.name != "Dark" && theme.name != "Light"),
       scifi_obj,
+      darkTheme,
+      lightTheme,
     ];
-    this.themes[0] = ascii_beautify_bg_fg_swap(this.themes[0]);
-    this.selectedTheme = this.themes[0];
+
+    console.log(this.themes);
+    this.selectedTheme = this.themes[1];
+    this.swapSelectedThemeBackground();
     this.designs = [
       {
         name: "Computer",
@@ -235,8 +249,24 @@ MMMMM88&&&&&&
 
   updated(changedProps) {
     if (changedProps.has("selectedTheme")) {
-      ascii_beautify_bg_fg_swap(this.selectedTheme);
+      this.swapSelectedThemeBackground();
     }
+
+    if(changedProps.has('ascii') || changedProps.has('selectedDesign')) {
+      this.fillBackgroundSpaces();
+    }
+  }
+
+  fillBackgroundSpaces() {
+    console.log("FILL SPACES");
+  }
+
+  async swapSelectedThemeBackground() {
+    ascii_beautify_bg_fg_swap(
+      this.selectedTheme,
+      this.selectedTheme.colors[" "]
+    );
+    await this.updateComplete;
   }
 
   static get styles() {
