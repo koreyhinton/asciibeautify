@@ -16,6 +16,7 @@
   "dependencies": {
     "@material/mwc-list": "^0.22.1",
     "@material/mwc-select": "^0.22.1",
+    "@material/mwc-textarea": "^0.22.1",
     "lit-element": "^2.5.1"
   },
   "scripts": {

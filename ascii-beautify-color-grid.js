@@ -1,4 +1,4 @@
-export default ascii_beautify_color_grid = (ascii, color_map) => {
+const ascii_beautify_color_grid = (ascii, color_map) => {
     var grid = [];
     var row=[];
     for (var i=0; i<ascii.length; i++) {
@@ -19,3 +19,5 @@ export default ascii_beautify_color_grid = (ascii, color_map) => {
     }
     return grid;
 }
+
+export default ascii_beautify_color_grid;
