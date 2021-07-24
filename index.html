@@ -1,12 +1,23 @@
 <html>
   <head>
     <title>ascii beautify demo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-      <style>
-
-
-      </style>
+    <style>
+      body {
+        --primary-color: #4c6197;
+        --light-color: #fff8f0;
+        --mdc-theme-primary: var(--primary-color);
+        background-color: var(--light-color);
+      }
+    </style>
     <ascii-beautify-demo></ascii-beautify-demo>
     <script type="module" src="./ascii-beautify-demo.js"></script>
   </body>
