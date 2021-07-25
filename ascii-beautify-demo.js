@@ -71,6 +71,18 @@ class AsciiBeautifyDemo extends LitElement {
   }
 
   createThemes() {
+    this.themes = [];
+
+    var darkTheme = { name: "Dark", colors: {} };
+    for (let [key, value] of Object.entries({ ...colorTemplate })) {
+      darkTheme.colors[key] = key === "sp" ? "#000000" : "#ffffff";
+    }
+
+    var lightTheme = { name: "Light", colors: {} };
+    for (let [key, value] of Object.entries({ ...colorTemplate })) {
+      lightTheme.colors[key] = key === "sp" ? "#ffffff" : "#000000";
+    }
+
     var scifi = [
       "#000000",
       "#FFFFFF",
@@ -85,30 +97,19 @@ class AsciiBeautifyDemo extends LitElement {
       "#88b720",
     ];
 
-    this.themes = [];
-
-    var darkTheme = { name: "Dark", colors: {} };
-    var darkTemplate = { ...colorTemplate };
-    for (let [key, value] of Object.entries(darkTemplate)) {
-      darkTheme.colors[key] = key === " " ? "#000000" : "#ffffff";
-    }
-
-    var lightTheme = { name: "Light", colors: {} };
-    var lightTemplate = { ...colorTemplate };
-    for (let [key, value] of Object.entries(lightTemplate)) {
-      lightTheme.colors[key] = key === " " ? "#ffffff" : "#000000";
-    }
-
     var scifiTheme = { name: "SciFi", colors: {} };
-    var templ_keys = Object.keys(colorTemplate);
-    for (var i = 0; i < templ_keys.length; i++) {
-      scifiTheme.colors[templ_keys[i]] = scifi[i % scifi.length];
+    let i = 0;
+    for (let [key, value] of Object.entries({ ...colorTemplate })) {
+      const color = scifi[i % scifi.length];
+      i += 1;
+      scifiTheme.colors[key] = color;
     }
+    console.log(scifiTheme);
 
     this.themes = [
-      asciiBeautifyBgFgSwap(lightTheme, lightTheme.colors[" "]),
-      asciiBeautifyBgFgSwap(darkTheme, darkTheme.colors[" "]),
-      asciiBeautifyBgFgSwap(scifiTheme, scifiTheme.colors[" "]),
+      asciiBeautifyBgFgSwap(lightTheme, lightTheme.colors["sp"]),
+      asciiBeautifyBgFgSwap(darkTheme, darkTheme.colors["sp"]),
+      asciiBeautifyBgFgSwap(scifiTheme, scifiTheme.colors["sp"]),
     ];
   }
 
@@ -279,6 +280,7 @@ class AsciiBeautifyDemo extends LitElement {
               <input
                 .value=${a[1]}
                 @change=${(e) => {
+                  console.log(a);
                   this.subTheme.colors[a[0]] = e.target.value;
                   this.selectedTheme = this.subTheme;
                 }}
@@ -294,7 +296,14 @@ class AsciiBeautifyDemo extends LitElement {
         .colors=${this.selectedTheme?.colors ?? {}}
       ></ascii-beautify>
 
-      <mwc-button ?hidden=${!this.ascii || !this.selectedTheme} raised
+      <mwc-button
+        @click=${() => {
+          const asciiBeautify = this.shadowRoot.querySelector("ascii-beautify");
+          asciiBeautify.downloadImage();
+
+        }}
+        ?hidden=${!this.ascii || !this.selectedTheme}
+        raised
         >Download Image</mwc-button
       >
     `;

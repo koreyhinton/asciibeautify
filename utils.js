@@ -2,13 +2,13 @@ export const asciiBeautifyBgFgSwap = (theme, color) => {
   var has_color = false;
   var has_space = false;
   var cks = Object.keys(theme.colors); //color keys
-  console.log(cks.length);
+//   console.log(cks.length);
   var sp_idx = -1;
   var color_idx = -1;
   for (var i = 0; i < cks.length; i++) {
     var k = cks[i]; //key
-    console.log(k);
-    if (k === " ") {
+    // console.log(k);
+    if (k === "sp") {
       has_space = true;
       sp_idx = i;
     }
@@ -17,13 +17,13 @@ export const asciiBeautifyBgFgSwap = (theme, color) => {
       color_idx = i;
     }
   }
-  console.log("check swap");
+//   console.log("check swap");
   if (!has_color && !has_space) return theme;
-  console.log("can swap");
+//   console.log("can swap");
   var temp = theme.colors[cks[sp_idx]];
   theme.colors[cks[sp_idx]] = theme.colors[color_idx];
   theme.colors[cks[color_idx]] = temp;
-  console.log("sp: " + theme.colors[cks[sp_idx]]);
+//   console.log("sp: " + theme.colors[cks[sp_idx]]);
   return theme;
 };
 
@@ -39,7 +39,7 @@ export const asciiBeautifyColorGrid = (ascii, color_map) => {
       row = [];
     } else {
       var obj = {};
-      obj.color = color_map[a];
+      obj.color = a === " " ? color_map["sp"] : color_map[a];
       row.push(obj);
     }
   }
@@ -55,7 +55,8 @@ export const asciiBeautifyReduce = (theme, ascii) => {
   subtheme.colors = {};
   var keys = Object.keys(theme.colors);
   for (var i = 0; i < keys.length; i++) {
-    if (ascii.includes(keys[i])) {
+      const c = keys[i] === 'sp' ? ' ' : keys[i];
+    if (ascii.includes(c)) {
       subtheme.colors[keys[i]] = theme.colors[keys[i]];
     }
   }
@@ -107,7 +108,7 @@ export const colorTemplate = {
   7: "#FFFFFF",
   8: "#FFFFFF",
   9: "#FFFFFF",
-  " ": "#FFFFFF",
+  "sp": "#FFFFFF",
   "!": "#FFFFFF",
   '"': "#FFFFFF",
   "#": "#FFFFFF",
