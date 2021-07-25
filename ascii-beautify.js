@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit-element";
-import ascii_beautify_color_grid from "./ascii-beautify-color-grid.js";
+import { asciiBeautifyColorGrid } from "./utils";
 
 class AsciiBeautify extends LitElement {
   static get properties() {
@@ -43,7 +43,7 @@ class AsciiBeautify extends LitElement {
   render() {
     return html`
       <table>
-        ${ascii_beautify_color_grid(this.ascii, this.colors).map((tro) => {
+        ${asciiBeautifyColorGrid(this.ascii, this.colors).map((tro) => {
           return html`
             <tr>
               ${tro.map((tdo) => {

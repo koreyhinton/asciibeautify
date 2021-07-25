@@ -1,13 +1,17 @@
 import { LitElement, html, css } from "lit-element";
 import "@material/mwc-select";
 import "@material/mwc-icon-button";
+import "@material/mwc-button";
 import "@material/mwc-list/mwc-list-item";
 import "./ascii-beautify.js";
 import "./ascii-textarea.js";
-import ascii_beautify_bg_fg_swap from "./ascii-beautify-bg-fg-swap.js";
-import ascii_beautify_reduce from "./ascii-beautify-reduce.js";
-import colorTemplate from "./color-template.js";
-import designsTemplate from "./design-template.js";
+import {
+  colorTemplate,
+  designsTemplate,
+  asciiBeautifyBgFgSwap,
+  asciiBeautifyReduce,
+  fillBackgroundSpaces,
+} from "./utils.js";
 
 class AsciiBeautifyDemo extends LitElement {
   static get properties() {
@@ -58,7 +62,8 @@ class AsciiBeautifyDemo extends LitElement {
       (changedProps.has("ascii") && this.ascii !== this.last_ascii) ||
       changedProps.has("selectedDesign")
     ) {
-      const asciiFilled = await this.fillBackgroundSpaces(this.ascii);
+      await this.updateComplete;
+      const asciiFilled = fillBackgroundSpaces(this.ascii);
       this.ascii = asciiFilled;
       this.last_ascii = asciiFilled;
     }
@@ -66,7 +71,7 @@ class AsciiBeautifyDemo extends LitElement {
     if (changedProps.has("ascii") || changedProps.has("selectedTheme")) {
       if (!!this.selectedTheme && !!this.ascii) {
         this.subTheme =
-          ascii_beautify_reduce(this.selectedTheme, this.ascii) ?? {};
+          asciiBeautifyReduce(this.selectedTheme, this.ascii) ?? {};
       }
     }
   }
@@ -107,53 +112,12 @@ class AsciiBeautifyDemo extends LitElement {
     }
 
     this.themes = [
-      ascii_beautify_bg_fg_swap(lightTheme, lightTheme.colors[" "]),
-      ascii_beautify_bg_fg_swap(darkTheme, darkTheme.colors[" "]),
-      ascii_beautify_bg_fg_swap(scifiTheme, scifiTheme.colors[" "]),
+      asciiBeautifyBgFgSwap(lightTheme, lightTheme.colors[" "]),
+      asciiBeautifyBgFgSwap(darkTheme, darkTheme.colors[" "]),
+      asciiBeautifyBgFgSwap(scifiTheme, scifiTheme.colors[" "]),
     ];
 
-    // Fix each theme's background colors
-    this.themes.forEach((theme) => {
-      ascii_beautify_bg_fg_swap(theme, theme.colors[" "]);
-    });
-
     this.subTheme = {};
-  }
-
-  async fillBackgroundSpaces(ascii) {
-    await this.updateComplete;
-
-    if (ascii == null || ascii.length == 0) {
-      return;
-    }
-    var min_w = 999;
-    var max_w = 0;
-    var lines = ascii.split("\n");
-    for (var i = 0; i < lines.length; i++) {
-      var ll = lines[i].length;
-      if (ll < min_w) min_w = ll;
-      if (ll > max_w) max_w = ll;
-    }
-    if (min_w == max_w) {
-      return;
-    }
-    var padded_str = "";
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
-      var trailer = "";
-      if (line[line.length - 1] == "\r") {
-        trailer = "\r";
-      }
-      var oops = 0;
-      while (line.length < max_w) {
-        line += " ";
-        if (oops > 300) break;
-      }
-      line += trailer;
-      line += "\n";
-      padded_str += line;
-    }
-    return padded_str;
   }
 
   static get styles() {
@@ -228,6 +192,21 @@ class AsciiBeautifyDemo extends LitElement {
         width: 50px;
         height: 50px;
         opacity: 0;
+      }
+
+      mwc-button {
+        align-self: flex-start;
+        margin-top: 24px;
+      }
+
+      @media (max-width: 768px) {
+        mwc-button {
+          align-self: inherit;
+        }
+      }
+
+      [hidden] {
+        display: none;
       }
     `;
   }
@@ -319,6 +298,10 @@ class AsciiBeautifyDemo extends LitElement {
         .ascii=${this.ascii ?? ""}
         .colors=${this.selectedTheme?.colors ?? {}}
       ></ascii-beautify>
+
+      <mwc-button ?hidden=${!this.ascii || !this.selectedTheme} raised
+        >Download Image</mwc-button
+      >
     `;
   }
 }
