@@ -62,8 +62,8 @@ class AsciiBeautifyDemo extends LitElement {
   }
 
   async updated(changedProps) {
-    if (changedProps.has("ascii") || changedProps.has("selectedTheme")) {
-      if (!!this.selectedTheme && !!this.ascii) {
+    if (changedProps.has("ascii") || changedProps.has("selectedTheme") || changedProps.has("selectedDesign")) {
+      if (!!this.selectedTheme && !!this.ascii && !!this.selectedDesign) {
         this.subTheme =
           asciiBeautifyReduce(this.selectedTheme, this.ascii) ?? {};
       }
@@ -104,7 +104,6 @@ class AsciiBeautifyDemo extends LitElement {
       i += 1;
       scifiTheme.colors[key] = color;
     }
-    console.log(scifiTheme);
 
     this.themes = [
       asciiBeautifyBgFgSwap(lightTheme, lightTheme.colors["sp"]),
@@ -234,6 +233,7 @@ class AsciiBeautifyDemo extends LitElement {
           this.selectedDesign = this.designs.find(
             (design) => design.name === e.target.value
           );
+          this.selectedTheme = this.themes?.find(theme => theme.name === this.selectedTheme?.name);
           this.ascii = fillBackgroundSpaces(this.selectedDesign.ascii);
         }}
       >
@@ -280,9 +280,8 @@ class AsciiBeautifyDemo extends LitElement {
               <input
                 .value=${a[1]}
                 @change=${(e) => {
-                  console.log(a);
                   this.subTheme.colors[a[0]] = e.target.value;
-                  this.selectedTheme = this.subTheme;
+                  this.selectedTheme = {...this.subTheme};
                 }}
                 type="color"
               />
