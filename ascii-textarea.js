@@ -8,8 +8,8 @@ class AsciiTextarea extends TextArea {
       css`
         textarea {
           font-family: "Fira Code" !important;
-          white-space: nowrap !important;
           overflow-x: auto !important;
+          white-space: pre !important;
         }
       `,
     ];
