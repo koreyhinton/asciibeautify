@@ -150,7 +150,7 @@ class AsciiBeautifyDemo extends LitElement {
       color-picker-container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: flex-start;
         margin-top: 24px;
       }
 
@@ -164,6 +164,7 @@ class AsciiBeautifyDemo extends LitElement {
         align-items: center;
         opacity: 0.7;
         overflow: hidden;
+        margin-right: 8px;
       }
 
       color-picker:hover {
