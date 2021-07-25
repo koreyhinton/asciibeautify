@@ -232,7 +232,7 @@ class AsciiBeautifyDemo extends LitElement {
           this.selectedDesign = this.designs.find(
             (design) => design.name === e.target.value
           );
-          this.ascii = this.selectedDesign.ascii;
+          this.ascii = fillBackgroundSpaces(this.selectedDesign.ascii);
         }}
       >
         ${this.designs.map(

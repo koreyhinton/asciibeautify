@@ -63,38 +63,38 @@ export const asciiBeautifyReduce = (theme, ascii) => {
 };
 
 export const fillBackgroundSpaces = (ascii) => {
-    if (ascii == null || ascii.length == 0) {
-        return;
-      }
-      var min_w = 999;
-      var max_w = 0;
-      var lines = ascii.split("\n");
-      for (var i = 0; i < lines.length; i++) {
-        var ll = lines[i].length;
-        if (ll < min_w) min_w = ll;
-        if (ll > max_w) max_w = ll;
-      }
-      if (min_w == max_w) {
-        return;
-      }
-      var padded_str = "";
-      for (var i = 0; i < lines.length; i++) {
-        var line = lines[i];
-        var trailer = "";
-        if (line[line.length - 1] == "\r") {
-          trailer = "\r";
-        }
-        var oops = 0;
-        while (line.length < max_w) {
-          line += " ";
-          if (oops > 300) break;
-        }
-        line += trailer;
-        line += "\n";
-        padded_str += line;
-      }
-      return padded_str;
-}
+  if (ascii == null || ascii.length == 0) {
+    return;
+  }
+  var min_w = 999;
+  var max_w = 0;
+  var lines = ascii.split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    var ll = lines[i].length;
+    if (ll < min_w) min_w = ll;
+    if (ll > max_w) max_w = ll;
+  }
+  if (min_w == max_w) {
+    return;
+  }
+  var padded_str = "";
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    var trailer = "";
+    if (line[line.length - 1] == "\r") {
+      trailer = "\r";
+    }
+    var oops = 0;
+    while (line.length < max_w) {
+      line += " ";
+      if (oops > 300) break;
+    }
+    line += trailer;
+    line += "\n";
+    padded_str += line;
+  }
+  return padded_str;
+};
 
 export const colorTemplate = {
   0: "#FFFFFF",
@@ -198,61 +198,73 @@ export const designsTemplate = [
   {
     name: "Computer",
     ascii: `
-     _____
-    | ___ |
-    ||   ||  J.O.
+    iiiiiii
+    i     i
+    i     i 
     ||___||
     |   _ |
     |_____|
-    /_/_|_\_\----.
-    /_/__|__\_\   )
-                (
-                []
-            `,
+    /_/_|_\_\      
+    /_/_|_\_\------|
+    /_/__|__\_\    |
+    /_/__|__\_\    |
+                []] 
+                []]
+                []]      
+                   `,
   },
   {
-    name: "Duck",
+    name: "Dino",
     ascii: `
-    >o)
-    (_>
+     _____              
+     _ ___|
+    __.ii,|
+    (__," |
+        | |
+        | |
+        | |
+        | |
+        | |---------------
+       /|                --
+       /                 ---
+       |--------------------------    
+       || //'     '||'   ||
+       || ((      '||'   ||
+       || '||'      |'   ||
+       ||  '||'     |'  ||
+      /_|   /_|    /_| /_|  
           `,
   },
   {
-    name: "Whale",
+    name: "Cacti",
     ascii: `
-     __v_
-    (____\/{
-            `,
+        iiiiii   
+        i    i   iiiii   
+  iiiii i    i   i   i   
+  i   i i o  i   i o i  
+  i o iii    i   i   i   
+  i       o  iiiii o i   
+  iiiiiii            i   
+        i  o  iiiiiiii   
+        i     i   
+        i  o  i   
+        i     i   
+        iiiiiii   
+`,
   },
   {
-    name: "Saturn",
+    name: "Staircase",
     ascii: `
-            .::.
-            .:'  .:
-    ,MMM8&&&.:'   .:'
-    MMMMM88&&&&  .:'
-    MMMMM88&&&&&&:'
-    MMMMM88&&&&&&
-    .:MMMMM88&&&&&&
-    .:'  MMMMM88&&&&
-    .:'   .:'MMM8&&&'
-    :'  .:'
-    '::'  jgs
-            `,
-  },
-  {
-    name: "Book",
-    ascii: `
-            ,   ,
-            /////|
-           ///// |
-          |~~~|  |
-          |===|  |
-          |j  |  |
-          | g |  |
-          |  s| /
-          |===|/
-          '---'
+    
+    -     ||    
+    --    ||    
+    ---    
+    ----    
+    -----       
+    ------    
+    -------    
+    --------    
+    ---------    
             `,
   },
 ];
