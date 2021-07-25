@@ -188,15 +188,22 @@ class AsciiBeautifyDemo extends LitElement {
         opacity: 0;
       }
 
+      button-container {
+          display: flex;
+      }
+
       mwc-button {
         align-self: flex-start;
         margin-top: 24px;
+        margin-right: 12px;
+        display: flex;
+        align-item: center;
       }
 
-      @media (max-width: 768px) {
-        mwc-button {
-          align-self: inherit;
-        }
+      mwc-button svg {
+          width: 18px;
+          height: 18px;
+          margin-right: 12px;
       }
 
       [hidden] {
@@ -295,7 +302,7 @@ class AsciiBeautifyDemo extends LitElement {
         .ascii=${this.ascii ?? ""}
         .colors=${this.selectedTheme?.colors ?? {}}
       ></ascii-beautify>
-
+      <button-container>
       <mwc-button
         @click=${() => {
           const asciiBeautify = this.shadowRoot.querySelector("ascii-beautify");
@@ -304,9 +311,69 @@ class AsciiBeautifyDemo extends LitElement {
         }}
         ?hidden=${!this.ascii || !this.selectedTheme}
         raised
-        >Download Image</mwc-button
+        ><svg viewBox="0 0 24 24">
+    <path fill="currentColor" d="M8,13H10.55V10H13.45V13H16L12,17L8,13M19.35,10.04C21.95,10.22 24,12.36 24,15A5,5 0 0,1 19,20H6A6,6 0 0,1 0,14C0,10.91 2.34,8.36 5.35,8.04C6.6,5.64 9.11,4 12,4C15.64,4 18.67,6.59 19.35,10.04M19,18A3,3 0 0,0 22,15C22,13.45 20.78,12.14 19.22,12.04L17.69,11.93L17.39,10.43C16.88,7.86 14.62,6 12,6C9.94,6 8.08,7.14 7.13,8.97L6.63,9.92L5.56,10.03C3.53,10.24 2,11.95 2,14A4,4 0 0,0 6,18H19Z" />
+</svg> PNG</mwc-button
       >
+      <mwc-button
+        @click=${() => {
+          this.gen_xpm(8);
+          
+        }}
+        ?hidden=${!this.ascii || !this.selectedTheme}
+        outlined
+        ><svg viewBox="0 0 24 24">
+    <path fill="currentColor" d="M8,13H10.55V10H13.45V13H16L12,17L8,13M19.35,10.04C21.95,10.22 24,12.36 24,15A5,5 0 0,1 19,20H6A6,6 0 0,1 0,14C0,10.91 2.34,8.36 5.35,8.04C6.6,5.64 9.11,4 12,4C15.64,4 18.67,6.59 19.35,10.04M19,18A3,3 0 0,0 22,15C22,13.45 20.78,12.14 19.22,12.04L17.69,11.93L17.39,10.43C16.88,7.86 14.62,6 12,6C9.94,6 8.08,7.14 7.13,8.97L6.63,9.92L5.56,10.03C3.53,10.24 2,11.95 2,14A4,4 0 0,0 6,18H19Z" />
+</svg> XPM</mwc-button
+      >
+     </button-container>
     `;
+  }
+  gen_xpm(scale=1) {
+    scale=1;//scale has to be 1 for xpm file output
+    var xpm="";
+    var header=`/* XPM */
+static char * xpm[] = {
+`;
+    var keys=Object.keys(this.subTheme.colors);
+    var w = this.ascii.replace("\r","").split("\n")[0].length;
+    var h = this.ascii.split("\n").length - 1;
+    var c = keys.length;
+    xpm += header;
+    var sp=" ";
+    xpm += "\"" + w + sp + h + sp + c + sp + scale + "\",";
+    for (var i=0; i<keys.length; i++) {
+      var key = keys[i];
+      var val = key == "sp" ? " " : key;
+      xpm += `
+`;
+      xpm += "\"" + val + sp + "c" + sp + this.subTheme.colors[key] + "\",";
+    }
+    xpm += `
+"`;
+    for (var i=0; i<this.ascii.length; i++) {
+      var a = this.ascii[i];
+      if (a == '\r'){continue;}
+      if (a == '\n'){
+	xpm += '",';
+	xpm += `
+"`;
+      }
+      else {
+	xpm += a;
+      }
+    }
+    xpm = xpm.substring(0,xpm.length-3);
+    xpm += `
+`;
+    xpm += '};';
+    var el = document.createElement('a');
+    el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(xpm));
+    el.setAttribute('download', 'img.xpm');
+    el.style.display = 'none';
+    document.body.appendChild(el);
+    el.click();
+    document.body.removeChild(el);
   }
 }
 customElements.define("ascii-beautify-demo", AsciiBeautifyDemo);
