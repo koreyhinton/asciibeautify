@@ -55,19 +55,13 @@ class AsciiBeautifyDemo extends LitElement {
 
     this.createThemes();
     this.designs = designsTemplate;
+
+    this.selectedTheme = this.themes[0];
+    this.selectedDesign = this.designs[0];
+    this.subTheme = {};
   }
 
   async updated(changedProps) {
-    if (
-      (changedProps.has("ascii") && this.ascii !== this.last_ascii) ||
-      changedProps.has("selectedDesign")
-    ) {
-      await this.updateComplete;
-      const asciiFilled = fillBackgroundSpaces(this.ascii);
-      this.ascii = asciiFilled;
-      this.last_ascii = asciiFilled;
-    }
-
     if (changedProps.has("ascii") || changedProps.has("selectedTheme")) {
       if (!!this.selectedTheme && !!this.ascii) {
         this.subTheme =
@@ -116,8 +110,6 @@ class AsciiBeautifyDemo extends LitElement {
       asciiBeautifyBgFgSwap(darkTheme, darkTheme.colors[" "]),
       asciiBeautifyBgFgSwap(scifiTheme, scifiTheme.colors[" "]),
     ];
-
-    this.subTheme = {};
   }
 
   static get styles() {
@@ -235,6 +227,7 @@ class AsciiBeautifyDemo extends LitElement {
       <mwc-select
         label="Design"
         outlined
+        .value=${this.selectedDesign?.name}
         @selected=${(e) => {
           this.selectedDesign = this.designs.find(
             (design) => design.name === e.target.value
@@ -255,13 +248,14 @@ class AsciiBeautifyDemo extends LitElement {
         label="Ascii"
         .value=${this.ascii ?? ""}
         @change=${(e) => {
-          this.ascii = e.target.value;
+          this.ascii = fillBackgroundSpaces(e.target.value);
         }}
       ></ascii-textarea>
 
       <mwc-select
         label="Theme"
         outlined
+        .value=${this.selectedTheme?.name}
         @selected=${(e) => {
           this.selectedTheme = this.themes.find(
             (theme) => theme.name === e.target.value
